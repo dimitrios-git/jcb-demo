@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+  <title>JCB demo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+
+  <body>
+  <div class="container">
+    <h1> This is the demo for JCB</h1>
+    <p><button type="button" class="btn btn-info" id="load" onclick="plotDataFrame()">Load Chart</button>
+  </div>
+
+  <div id = "plot" style="height: 1100px; width: 100%;"></div>
+
+    <script type="text/javascript">
+      var layout = {
+            xaxis: {range: [0, 100], title: "Randomly generated 1000 values ranging 0-100(Column A)"},
+            yaxis: {range: [0, 10], title: "Modulo 10 of generated values(Column B)"},
+            title: "Value vs. Value%10"
+      };
+
+      function plotDataFrame(){
+         $.ajax({
+          url:'/data',
+          type:'GET',
+          dataType: 'JSON',
+          success: function(data)
+          {
+              x = [], y = []
+              parsedOutput = JSON.parse(JSON.stringify(data))
+              parsedOutput.forEach(val => {
+                  x.push(val.a)
+                  y.push(val.b)
+              })
+              output = [{
+                  x: x,
+                  y: y,
+                  type: "line",
+                  mode: "lines+markers",
+                  marker: {
+                    color: 'blue',
+                    size: 10
+                  },
+                  line: {
+                      dash: 'dot',
+                      width: 0.4
+                    }
+                }];
+
+              Plotly.newPlot('plot', output, layout);
+          }
+         });
+      }
+    </script>
+  </body>
+</html>
