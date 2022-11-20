@@ -62,5 +62,5 @@ docker network rm jcb_demo network
 ```
 With the docker commands laid down, I will now try to use Ansible to:
 - [x] Start the configuration, [`ansible-run.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-run.yml)
-- [ ] Stop and clean,
+- [x] Stop and clean, [`ansible-clean.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-clean.yml)
 - [ ] Build images, so that we can get rid of the `Dockerfile`s, too.
