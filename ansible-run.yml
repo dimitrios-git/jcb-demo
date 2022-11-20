@@ -16,7 +16,7 @@
         community.docker.docker_container:
           # This removes a deprecation warning
           container_default_behavior: no_defaults
-          name: app-ansible
+          name: jcb_demo-app_container
           image: jcb_demo-app
           state: started
           ports:
@@ -32,7 +32,7 @@
       - name: Start nginx container
         community.docker.docker_container:
           container_default_behavior: no_defaults
-          name: nginx-ansible
+          name: jcb_demo-nginx_container
           image: jcb_demo-nginx
           state: started
           ports:
