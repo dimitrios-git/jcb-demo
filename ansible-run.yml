@@ -4,7 +4,6 @@
     gather_facts: no
     vars_prompt:
       - name: sample_size
-        # This produces import error for jinja2 plugin, when using Ansible <2.13
         prompt: "Please set the sample size (must be a positive integer)"
         default: "1000"
         private: no
@@ -22,6 +21,7 @@
           ports:
             - 8000:80
           env:
+            # Using variables throws a warning for the jinja2 plugin.
             SAMPLE_SIZE: "{{ sample_size }}"
           # This removes a deprecation warning
           network_mode: default
@@ -29,6 +29,7 @@
             - name: jcb_demo-network
               aliases:
                 - app
+          command: gunicorn --chdir /app --bind 0.0.0.0:8000 wsgi:app
       - name: Start nginx container
         community.docker.docker_container:
           container_default_behavior: no_defaults
@@ -40,4 +41,4 @@
           network_mode: default
           networks:
             - name: jcb_demo-network
-
+          restart: yes  

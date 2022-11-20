@@ -1,0 +1,61 @@
+---
+  - name: Create app base container
+    hosts: localhost
+    tasks:
+    - name: Pull python version 3.10.6 image
+      community.docker.docker_container:
+        # This removes a deprecation warning
+        container_default_behavior: no_defaults
+        name: "app-base"
+        image: "python:3.10.6"
+        state: started
+        exposed_ports:
+          - "5000"
+        # This is required to keep the container running
+        command: tail -f /dev/null
+    - name: Add app base container to Ansible hosts
+      add_host:
+        name: "app-base"
+        ansible_connection: docker
+        ansible_ssh_user: root
+  - name: Configure app-base for building jcb_demo-app image
+    hosts: "app-base"
+    gather_facts: false
+    tasks:
+      - name: Create the /app directory
+        ansible.builtin.file:
+          path: /app
+          state: directory
+      - name: Copy requirements.txt
+        ansible.builtin.copy:
+          src: ./app/requirements.txt
+          dest: /app/requirements.txt
+      - name: Copy the app files
+        ansible.builtin.copy:
+          # Using variables throws a warning for the jinja2 plugin.
+          src: "{{ item }}"
+          dest: /app/
+        with_fileglob:
+          - "./app/*.py"
+      - name: Install specified python requirements
+        #ansible.builtin.pip:
+        #  requirements: /app/requirements.txt
+        # Using the pip module throws an error about Python library (setuptools)
+        # Installing and then removing the library just for this does not make sense
+        # Using the raw command instead
+        raw: pip install -r /app/requirements.txt
+  - name: Create jcb_demo-app image
+    hosts: localhost
+    tasks:
+      - name: Commit Docker image
+        command: docker commit "app-base" "jcb_demo-app"
+  - name: Remove app-base as it's no longer needed
+    hosts: localhost
+    tasks:
+      - name: Remove app-base container
+        community.docker.docker_container:
+          # This removes a deprecation warning
+          container_default_behavior: no_defaults
+          name: app-base
+          state: absent
+          force_kill: yes

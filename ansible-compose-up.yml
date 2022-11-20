@@ -1,0 +1,7 @@
+---
+  - name: Import app building playbook
+    ansible.builtin.import_playbook: ansible-build-app.yml
+  - name: Import nginx building playbook
+    ansible.builtin.import_playbook: ansible-build-nginx.yml
+  - name: Import execution playbook
+    ansible.builtin.import_playbook: ansible-run.yml

@@ -1,0 +1,34 @@
+---
+  - name: Clean JCB Demo
+    hosts: localhost
+    gather_facts: no
+    tasks:
+      - name: Stop the nginx container
+        community.docker.docker_container:
+          # This removes a deprecation warning
+          container_default_behavior: no_defaults
+          name: jcb_demo-nginx_container
+          state: stopped
+      - name: Stop the app container
+        community.docker.docker_container:
+          # This removes a deprecation warning
+          container_default_behavior: no_defaults
+          name: jcb_demo-app_container
+          state: stopped
+      - name: Remove the nginx container
+        community.docker.docker_container:
+          # This removes a deprecation warning
+          container_default_behavior: no_defaults
+          name: jcb_demo-nginx_container
+          state: absent
+      - name: Remove the app container
+        community.docker.docker_container:
+          # This removes a deprecation warning
+          container_default_behavior: no_defaults
+          name: jcb_demo-app_container
+          state: absent
+      - name: Delete the network
+        community.docker.docker_network:
+          name: jcb_demo-network
+          state: absent
+          force: true
