@@ -4,7 +4,7 @@
     gather_facts: no
     vars_prompt:
       - name: sample_size
-        # This produces import exception, when using Ansible <2.13
+        # This produces import error for jinja2 plugin, when using Ansible <2.13
         prompt: "Please set the sample size (must be a positive integer)"
         default: "1000"
         private: no
