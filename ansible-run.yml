@@ -1,0 +1,40 @@
+---
+  - name: Playing with Ansible
+    hosts: localhost
+    gather_facts: no
+    vars_prompt:
+      - name: sample_size
+        prompt: "Please set the sample size (must be a positive integer)"
+        default: "1000"
+        private: no
+    tasks:
+      - name: Create a docker network
+        community.docker.docker_network:
+          name: jcb_demo-network
+      - name: Start app container
+        community.docker.docker_container:
+          container_default_behavior: no_defaults
+          name: app-ansible
+          image: jcb_demo-app
+          state: started
+          ports:
+            - 8000:80
+          env:
+            SAMPLE_SIZE: "{{ sample_size }}"
+          network_mode: default
+          networks:
+            - name: jcb_demo-network
+              aliases:
+                - app
+      - name: Start nginx container
+        community.docker.docker_container:
+          container_default_behavior: no_defaults
+          name: nginx-ansible
+          image: jcb_demo-nginx
+          state: started
+          ports:
+            - 80:80
+          network_mode: default
+          networks:
+            - name: jcb_demo-network
+
