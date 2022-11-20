@@ -38,7 +38,7 @@ docker run -d -p 8000:80 -e SAMPLE_SIZE=1000 --network jcb_demo-network
 |:------------- | :---
 | `-d`          | Runs the container detached aka in the background
 | `-p 8000:80`  | Forwards port 8000 of the container to port 80 of the localhost
-| `-e` |        | Set environment variable
+| `-e`          | Set environment variable
 | `--network`   | Add the container to a network
 | `--net-alias` | Set the hostname of the container
 | `name`        | Set the name of the container
@@ -61,6 +61,6 @@ docker rm jcb_demo-app
 docker network rm jcb_demo network
 ```
 With the docker commands laid down, I will now try to use Ansible to:
-- [x] Start the configuration `ansible-run.yml`,
+- [x] Start the configuration, [`ansible-run.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-run.yml)
 - [ ] Stop and clean,
 - [ ] Build images, so that we can get rid of the `Dockerfile`s, too.

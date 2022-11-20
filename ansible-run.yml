@@ -1,9 +1,10 @@
 ---
-  - name: Playing with Ansible
+  - name: Run JCB Demo
     hosts: localhost
     gather_facts: no
     vars_prompt:
       - name: sample_size
+        # This produces import exception, when using Ansible <2.13
         prompt: "Please set the sample size (must be a positive integer)"
         default: "1000"
         private: no
@@ -13,6 +14,7 @@
           name: jcb_demo-network
       - name: Start app container
         community.docker.docker_container:
+          # This removes a deprecation warning
           container_default_behavior: no_defaults
           name: app-ansible
           image: jcb_demo-app
@@ -21,6 +23,7 @@
             - 8000:80
           env:
             SAMPLE_SIZE: "{{ sample_size }}"
+          # This removes a deprecation warning
           network_mode: default
           networks:
             - name: jcb_demo-network
