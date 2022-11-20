@@ -19,7 +19,7 @@ step. Ansible is able to not only control Docker, but also build containers.
 Therefore, it makes sense to get rid of `docker compose` at first and in the
 next step get rid of `Dockerfile`s as well.
 
-Using the `Dockerfile`s the images for two containers are created:
+Using the `Dockerfile`s the images for the two containers are created:
 ```
 docker build -t jcb_demo-app app/
 docker build -t jcb_demo-nginx nginx/
@@ -75,13 +75,13 @@ With all the pieces in place, I tried to replicate the functionality of `docker
 compose`, and I created the
 [`ansible-compose-up.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-compose-up.yml)
 and [`ansible-compose-down.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-compose-down.yml). The [`ansible-compose-down.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-compose-down.yml) 
-cleans up the system by stop the two containers and removing them along with the
+cleans up the system by stopping the two containers and removing them along with the
 network. The [`ansible-compose-up.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-compose-up.yml) consists of three separate ansible playbooks:
 1. [`ansible-build-app.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-build-app.yml) which builds the app image,
 2. [`ansible-build-nginx.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-build-nginx.yml) which builds the nginx image,
 3. [`ansible-build-nginx.yml`](https://github.com/dscharalampidis/jcb-demo/blob/main/ansible-build-nginx.yml) which starts the containers.
 
-All ansible playbooks can be run separate as stand-alone playbooks. It must be
+All ansible playbooks can be run separately as stand-alone playbooks. It must be
 noted that they lack error handling, and therefore, running them twice will
 produce errors, but I believe that error handling is out of the scope of this
 project.
