@@ -5,7 +5,7 @@ configuration. The app shall be modified to accept the sample size as a
 variable and that variable should be set using Ansible.
 
 ## Notes on my implementation
-I used to Docker and docker compose to create a couple of containers. The first
+I used Docker and docker compose to create a couple of containers. The first
 one is running an Nginx websever, with a custom configuration to serve the app's
 output at `/data`.
 
